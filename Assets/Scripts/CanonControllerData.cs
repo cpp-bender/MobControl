@@ -3,11 +3,15 @@
 [CreateAssetMenu(fileName = "Canon Controller Data", menuName = "Mob Crowd/Canon Controller Data")]
 public class CanonControllerData : ScriptableObject
 {
+    [SerializeField] GameObject playerPrefab;
     [SerializeField] float moveSpeed;
-    [SerializeField] float lowerThreshold;
-    [SerializeField] float upperThreshold;
+    [SerializeField] float moveThreshold;
+    [SerializeField] float pushRoutineFrameCount;
+    [Tooltip("In br.")] [SerializeField] float pushTo;
 
+    public GameObject PlayerPrefab { get => playerPrefab; }
     public float MoveSpeed { get => moveSpeed; }
-    public float LowerThreshold { get => lowerThreshold; }
-    public float UpperThreshold { get => upperThreshold; }
+    public float MoveThreshold { get => moveThreshold; }
+    public float PushTo { get => pushTo; }
+    public float PushRoutineFrameCount { get => pushRoutineFrameCount; }
 }

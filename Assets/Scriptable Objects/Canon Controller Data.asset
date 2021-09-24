@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fccb621b2382543b81f41b39ce9a9d, type: 3}
   m_Name: Canon Controller Data
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 2356766321045018163, guid: 2a939b553e749c44592e0a1f6ee81f68,
+    type: 3}
   moveSpeed: 5
-  lowerThreshold: -5
-  upperThreshold: 5
+  moveThreshold: 5
+  pushRoutineFrameCount: 30
+  pushTo: 5
