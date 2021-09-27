@@ -2,11 +2,11 @@
 
 public class DestinationController : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            var player = other.gameObject;
+            var player = collision.gameObject;
             player.SetActive(false);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IEntity
 {
     [SerializeField] PlayerData playerData;
 
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Move()
+    public void Move()
     {
         Vector3 dirToTarget = (destination.transform.position - transform.position).normalized;
         transform.Translate(dirToTarget * Time.deltaTime * playerData.MoveSpeed, Space.World);

@@ -10,14 +10,6 @@ public class CanonController : MonoBehaviour
         Move();
     }
 
-    private void OnGUI()
-    {
-        if (GUI.Button(new Rect(10, 10, 100, 50), "Spawn"))
-        {
-            SpawnPlayer();
-        }
-    }
-
     private void Move()
     {
         var horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -26,7 +18,7 @@ public class CanonController : MonoBehaviour
         transform.position = new Vector3(canonPosX, transform.position.y, transform.position.z);
     }
 
-    private void SpawnPlayer()
+    public void SpawnPlayer()
     {
         var playerStartPos = new Vector3(transform.position.x, 0f, transform.position.z + 1f);
         GameObject player = Instantiate(canonData.PlayerPrefab, playerStartPos, Quaternion.identity);
