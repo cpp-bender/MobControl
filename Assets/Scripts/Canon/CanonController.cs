@@ -5,6 +5,10 @@ public class CanonController : MonoBehaviour
 {
     [SerializeField] CanonControllerData canonData;
 
+    [Header("Debug Values")]
+    [SerializeField] float playerNextSpawnTime;
+    [SerializeField] float playerRespawnTime;
+
     private void Update()
     {
         Move();
@@ -20,9 +24,13 @@ public class CanonController : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        var playerStartPos = new Vector3(transform.position.x, 0f, transform.position.z + 1f);
-        GameObject player = Instantiate(canonData.PlayerPrefab, playerStartPos, Quaternion.identity);
-        StartCoroutine(PushRoutine(player));
+        if (Time.time >= playerNextSpawnTime)
+        {
+            var playerStartPos = new Vector3(transform.position.x, 0f, transform.position.z + 1f);
+            GameObject player = Instantiate(canonData.PlayerPrefab, playerStartPos, Quaternion.identity);
+            playerNextSpawnTime = Time.time + playerRespawnTime;
+            StartCoroutine(PushRoutine(player));
+        }
     }
 
     private IEnumerator PushRoutine(GameObject player)

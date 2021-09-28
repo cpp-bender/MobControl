@@ -55,7 +55,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void OnGameStart()
     {
-        StartCoroutine(WaitRoutine(1.5f));
+        StartCoroutine(GameStartRoutine(1.5f));
     }
 
     private IEnumerator SpawnEnemyWaveRoutine(float waitTime)
@@ -75,10 +75,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         canInstantiateEnemyWave = true;
     }
 
-    private IEnumerator WaitRoutine(float waitTime)
+    private IEnumerator GameStartRoutine(float waitTime)
     {
-        yield return new WaitForSecondsRealtime(waitTime);
         isGameStarted = true;
+        yield return new WaitForSecondsRealtime(waitTime);
         canInstantiateEnemyWave = true;
     }
 }
