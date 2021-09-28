@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "Canon Controller Data", menuName = "Mob Crowd/Canon Controller Data")]
+[CreateAssetMenu(fileName = "Canon Controller Data", menuName = "Mob Control/Canon Controller Data")]
 public class CanonControllerData : ScriptableObject
 {
     [SerializeField] GameObject playerPrefab;

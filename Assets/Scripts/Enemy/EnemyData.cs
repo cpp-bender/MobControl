@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy Data", menuName = "Mob Crowd/Enemy Data")]
+[CreateAssetMenu(fileName = "Enemy Data", menuName = "Mob Control/Enemy Data")]
 public class EnemyData : ScriptableObject
 {
     [SerializeField] float moveSpeed;

@@ -38,6 +38,5 @@ public class CanonController : MonoBehaviour
             frames++;
             yield return null;
         }
-        Debug.Log("PushRoutine stopped");
     }
 }

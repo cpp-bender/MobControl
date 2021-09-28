@@ -43,3 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d784ccc66cac9a498c4e95448341aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemySpawnData: {fileID: 11400000, guid: ab91763aba91b8e47932af43f195ba5d, type: 2}
+  gameData: {fileID: 11400000, guid: f8423b3ba925b4b418c719143491b8be, type: 2}
+  isGameStarted: 0
+  canInstantiateEnemyWave: 0

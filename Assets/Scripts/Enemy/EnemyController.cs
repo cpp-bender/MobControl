@@ -5,13 +5,6 @@ public class EnemyController : MonoBehaviour, IEntity
 {
     [SerializeField] EnemyData enemyData;
 
-    private GameObject canon;
-
-    private void Awake()
-    {
-        canon = GameManager.Instance.Canon;
-    }
-
     private void Update()
     {
         Move();
@@ -29,6 +22,19 @@ public class EnemyController : MonoBehaviour, IEntity
 
     public void Move()
     {
-        transform.Translate(transform.forward * enemyData.MoveSpeed * Time.deltaTime, Space.World);
+        if (transform.position.z > 1f)
+        {
+            transform.Translate(transform.forward * enemyData.MoveSpeed * Time.deltaTime, Space.World);
+        }
+        else
+        {
+            StartCoroutine(RemoveRoutine(1.5f));
+        }
+    }
+
+    private IEnumerator RemoveRoutine(float waitDelay)
+    {
+        yield return new WaitForSeconds(waitDelay);
+        gameObject.SetActive(false);
     }
 }

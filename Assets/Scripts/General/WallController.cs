@@ -11,6 +11,11 @@ public class WallController : MonoBehaviour
 
     [SerializeField] DoublingValue doublingValue;
 
+    private void Update()
+    {
+        //TODO: Make the wall move between 2 points
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
