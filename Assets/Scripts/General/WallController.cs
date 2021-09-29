@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class WallController : MonoBehaviour
 {
@@ -9,11 +10,28 @@ public class WallController : MonoBehaviour
         x6 = 6,
     };
 
+    [SerializeField] WallData wallData;
     [SerializeField] DoublingValue doublingValue;
+    [SerializeField] bool canMove;
 
-    private void Update()
+    private void OnEnable()
     {
-        //TODO: Make the wall move between 2 points
+        if (canMove)
+        {
+            StartCoroutine(MoveBetweenRoutine());
+        }
+    }
+
+    private IEnumerator MoveBetweenRoutine()
+    {
+        while (true)
+        {
+            Vector3 startPos = new Vector3(-wallData.MoveBetween, transform.position.y, transform.position.z);
+            float interpolation = Mathf.PingPong(Time.time * wallData.MoveBetweenSpeed, 1);
+            Vector3 targetPos = new Vector3(wallData.MoveBetween, transform.position.y, transform.position.z);
+            transform.position = Vector3.Lerp(startPos, targetPos, interpolation);
+            yield return null;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

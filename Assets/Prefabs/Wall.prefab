@@ -107,4 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1f5479bdba3524696b333920843ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallData: {fileID: 0}
   doublingValue: 2
+  canMove: 1
