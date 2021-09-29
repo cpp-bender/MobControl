@@ -4,6 +4,7 @@
 public class GameData : ScriptableObject
 {
     [SerializeField] GameObject enemyPrefab;
+    [SerializeField] GameObject playerPrefab;
 
     public GameObject EnemyPrefab { get => enemyPrefab; }
 }

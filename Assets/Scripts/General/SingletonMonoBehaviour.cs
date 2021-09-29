@@ -12,11 +12,17 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
         }
     }
 
+    public bool dontDestroyOnLoad;
+
     protected virtual void Awake()
     {
         if (instance == null)
         {
             instance = this as T;
+            if (dontDestroyOnLoad)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
         }
         else
         {

@@ -27,7 +27,8 @@ public class CanonController : MonoBehaviour
         if (Time.time >= playerNextSpawnTime)
         {
             var playerStartPos = new Vector3(transform.position.x, 0f, transform.position.z + 1f);
-            GameObject player = Instantiate(canonData.PlayerPrefab, playerStartPos, Quaternion.identity);
+            GameObject player = PoolManager.Instance.Get(PoolGameObjectType.Player);
+            player.transform.position = playerStartPos;
             playerNextSpawnTime = Time.time + playerRespawnTime;
             StartCoroutine(PushRoutine(player));
         }

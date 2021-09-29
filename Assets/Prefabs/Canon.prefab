@@ -124,3 +124,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canonData: {fileID: 11400000, guid: b27a7e68d54bef44ca46fc1c1d1b1d08, type: 2}
+  playerNextSpawnTime: 0
+  playerRespawnTime: 1

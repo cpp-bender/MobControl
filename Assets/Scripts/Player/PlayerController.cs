@@ -18,6 +18,14 @@ public class PlayerController : MonoBehaviour, IEntity
         Move();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            PoolManager.Instance.ReturnToPool(gameObject, PoolGameObjectType.Player);
+        }
+    }
+
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))

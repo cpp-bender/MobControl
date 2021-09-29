@@ -11,7 +11,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public Action GameStart;
 
     [SerializeField] EnemySpawnData enemySpawnData;
-    [SerializeField] GameData gameData;
 
     [Header("Debug Values")]
     [SerializeField] bool isGameStarted;
@@ -68,7 +67,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             ranPosY = Random.Range(enemySpawnData.EnemySpawnPosYThreshold, enemySpawnData.EnemySpawnPosYThreshold + .5f);
             var enemyStartPos = new Vector3(Destination.transform.position.x + randPosX, 0f, Destination.transform.position.z - ranPosY);
             var enemyQuaternion = Quaternion.Euler(0f, 180f, 0f);
-            Instantiate(gameData.EnemyPrefab, enemyStartPos, enemyQuaternion);
+            GameObject enemy = PoolManager.Instance.Get(PoolGameObjectType.Enemy);
+            enemy.transform.position = enemyStartPos;
+            enemy.transform.rotation = enemyQuaternion;
             yield return new WaitForSeconds(.1f);
         }
         yield return new WaitForSecondsRealtime(waitTime);

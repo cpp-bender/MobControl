@@ -14,9 +14,7 @@ public class EnemyController : MonoBehaviour, IEntity
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            var player = collision.gameObject;
-            player.SetActive(false);
-            gameObject.SetActive(false);
+            PoolManager.Instance.ReturnToPool(gameObject, PoolGameObjectType.Enemy);
         }
     }
 
@@ -28,13 +26,13 @@ public class EnemyController : MonoBehaviour, IEntity
         }
         else
         {
-            StartCoroutine(RemoveRoutine(1.5f));
+            StartCoroutine(RemoveRoutine(.5f));
         }
     }
 
     private IEnumerator RemoveRoutine(float waitDelay)
     {
         yield return new WaitForSeconds(waitDelay);
-        gameObject.SetActive(false);
+        PoolManager.Instance.ReturnToPool(gameObject, PoolGameObjectType.Enemy);
     }
 }
