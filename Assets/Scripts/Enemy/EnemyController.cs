@@ -54,11 +54,19 @@ public class EnemyController : MonoBehaviour, IEntity
                 hugePlayer.transform.localScale -= (Vector3.one / 10f);
             }
         }
-        else if(collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Huge Enemy"))
+        else if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Huge Enemy"))
         {
             var enemy = collision.gameObject;
             body.velocity = Vector3.zero;
             enemy.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            ResetVelocityTo(Vector3.zero);
         }
     }
 
@@ -91,5 +99,10 @@ public class EnemyController : MonoBehaviour, IEntity
     public void SetScale(GameObject gameObject, Vector3 scale)
     {
         gameObject.transform.localScale = scale;
+    }
+
+    public void ResetVelocityTo(Vector3 newVelocity)
+    {
+        body.velocity = newVelocity;
     }
 }

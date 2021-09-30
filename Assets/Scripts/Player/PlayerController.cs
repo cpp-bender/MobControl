@@ -65,13 +65,13 @@ public class PlayerController : MonoBehaviour, IEntity
         }
     }
 
-    private void ResetVelocityTo(Vector3 newVeclocity)
-    {
-        body.velocity = newVeclocity;
-    }
-
     public void SetScale(GameObject gameObject, Vector3 scale)
     {
         gameObject.transform.localScale = scale;
+    }
+
+    public void ResetVelocityTo(Vector3 newVelocity)
+    {
+        body.velocity = newVelocity;
     }
 }
