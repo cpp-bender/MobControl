@@ -109,4 +109,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallData: {fileID: 11400000, guid: c044a69f90c43fa40a39e2be2d4443cd, type: 2}
   doublingValue: 2
-  canMove: 1
+  canMoveBetween: 0

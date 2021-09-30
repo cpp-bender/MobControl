@@ -39,6 +39,7 @@ public class EnemyController : MonoBehaviour, IEntity
         if (collision.gameObject.CompareTag("Player"))
         {
             GameObject player = collision.gameObject;
+            ResetVelocityTo(Vector3.zero);
             PoolManager.Instance.ReturnToPool(player, PoolGameObjectType.Player);
         }
         else if (collision.gameObject.CompareTag("Huge Player"))
@@ -47,6 +48,7 @@ public class EnemyController : MonoBehaviour, IEntity
             if (hugePlayer.transform.localScale == Vector3.one / 2f)
             {
                 SetScale(hugePlayer, Vector3.one);
+                ResetVelocityTo(Vector3.zero);
                 PoolManager.Instance.ReturnToPool(hugePlayer, PoolGameObjectType.HugePlayer);
             }
             else

@@ -52,6 +52,11 @@ public class PlayerController : MonoBehaviour, IEntity
         {
             ResetVelocityTo(Vector3.zero);
         }
+        else if(collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Huge Enemy"))
+        {
+            GameObject enemy = collision.gameObject;
+            enemy.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
     }
 
     public void Move()

@@ -7,6 +7,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     public GameObject Destination { get; private set; }
     public GameObject Canon { get; private set; }
+    public GameObject Platform { get; private set; }
     public bool IsGameOver { get => isGameOver; set => isGameOver = value; }
 
     private Action LeftButtonClick;
@@ -22,11 +23,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        Destination = GameObject.Find("Destination");
-        Canon = GameObject.Find("Canon");
     }
 
-    private void OnEnable()
+    private void Start()
     {
         LeftButtonClick = Canon.GetComponent<CanonController>().SpawnPlayer;
         GameStart = OnGameStart;
@@ -61,6 +60,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     private void OnGameStart()
     {
         StartCoroutine(GameStartRoutine(1.5f));
+    }
+
+    public void FindInstances()
+    {
+        Platform = GameObject.Find("Platform");
+        Destination = GameObject.Find("Destination");
+        Canon = GameObject.Find("Canon");
     }
 
     private IEnumerator SpawnEnemyWaveRoutine(float waitTime)

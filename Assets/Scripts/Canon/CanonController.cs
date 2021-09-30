@@ -6,6 +6,7 @@ public class CanonController : MonoBehaviour
     [SerializeField] CanonControllerData canonData;
 
     private float playerNextSpawnTime;
+    private float canonMoveThreshold;
 
     private void Update()
     {
@@ -15,12 +16,22 @@ public class CanonController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        SetCanonThreshold();
+    }
+
     private void Move()
     {
         var horizontalInput = Input.GetAxisRaw("Horizontal");
         float canonPosX = transform.position.x + canonData.MoveSpeed * horizontalInput * Time.deltaTime;
-        canonPosX = Mathf.Clamp(canonPosX, -canonData.MoveThreshold, canonData.MoveThreshold);
+        canonPosX = Mathf.Clamp(canonPosX, -canonMoveThreshold, canonMoveThreshold);
         transform.position = new Vector3(canonPosX, transform.position.y, transform.position.z);
+    }
+
+    private void SetCanonThreshold()
+    {
+        canonMoveThreshold = GameManager.Instance.Platform.transform.localScale.x * 2 * transform.localScale.x + (transform.localScale.x / 2);
     }
 
     public void SpawnPlayer()

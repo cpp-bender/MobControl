@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using Random = UnityEngine.Random;
 using UnityEngine;
+using System;
 
 public class WallController : MonoBehaviour
 {
@@ -12,14 +14,23 @@ public class WallController : MonoBehaviour
 
     [SerializeField] WallData wallData;
     [SerializeField] DoublingValue doublingValue;
-    [SerializeField] bool canMoveBetween;
+
+    private float moveBetween;
 
     private void OnEnable()
     {
-        if (canMoveBetween)
+        if (Random.Range(0, 100 / 75) == 0)
         {
+            SetWallMoveBetweenValue();
             StartCoroutine(MoveBetweenRoutine());
+            doublingValue = DoublingValue.x3;
+            return;
         }
+        doublingValue = DoublingValue.x2;
+    }
+
+    private void Start()
+    {
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,13 +57,18 @@ public class WallController : MonoBehaviour
         }
     }
 
+    private void SetWallMoveBetweenValue()
+    {
+        moveBetween = transform.position.x;
+    }
+
     private IEnumerator MoveBetweenRoutine()
     {
         while (true)
         {
-            Vector3 startPos = new Vector3(-wallData.MoveBetween, transform.position.y, transform.position.z);
+            Vector3 startPos = new Vector3(-moveBetween, transform.position.y, transform.position.z);
             float interpolation = Mathf.PingPong(Time.time * wallData.MoveBetweenSpeed, 1);
-            Vector3 targetPos = new Vector3(wallData.MoveBetween, transform.position.y, transform.position.z);
+            Vector3 targetPos = new Vector3(moveBetween, transform.position.y, transform.position.z);
             transform.position = Vector3.Lerp(startPos, targetPos, interpolation);
             yield return null;
         }

@@ -43,7 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d784ccc66cac9a498c4e95448341aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
+  dontDestroyOnLoad: 1
   enemySpawnData: {fileID: 11400000, guid: ab91763aba91b8e47932af43f195ba5d, type: 2}
   isGameStarted: 0
   canInstantiateEnemyWave: 0
+  isGameOver: 0

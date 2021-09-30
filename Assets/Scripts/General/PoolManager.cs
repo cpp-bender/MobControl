@@ -23,7 +23,8 @@ public class PoolManager : SingletonMonoBehaviour<PoolManager>
         for (int i = 0; i < poolData.Prefabs.Length; i++)
         {
             poolObjects[i] = new Queue<GameObject>();
-            Instantiate(new GameObject(poolData.Prefabs[i].name), transform);
+            GameObject go = new GameObject(poolData.Prefabs[i].name);
+            go.transform.SetParent(transform);
         }
     }
 
