@@ -5,13 +5,14 @@ public class CanonController : MonoBehaviour
 {
     [SerializeField] CanonControllerData canonData;
 
-    [Header("Debug Values")]
-    [SerializeField] float playerNextSpawnTime;
-    [SerializeField] float playerRespawnTime;
+    private float playerNextSpawnTime;
 
     private void Update()
     {
-        Move();
+        if (!GameManager.Instance.IsGameOver)
+        {
+            Move();
+        }
     }
 
     private void Move()
@@ -27,9 +28,12 @@ public class CanonController : MonoBehaviour
         if (Time.time >= playerNextSpawnTime)
         {
             var playerStartPos = new Vector3(transform.position.x, 0f, transform.position.z + 1f);
-            GameObject player = PoolManager.Instance.Get(PoolGameObjectType.Player);
+            GameObject player = Random.Range(0, 100 / canonData.HugePlayerSpawnPercentRate)
+                == 0
+                ? PoolManager.Instance.Get(PoolGameObjectType.HugePlayer)
+                : PoolManager.Instance.Get(PoolGameObjectType.Player);
             player.transform.position = playerStartPos;
-            playerNextSpawnTime = Time.time + playerRespawnTime;
+            playerNextSpawnTime = Time.time + canonData.PlayerRespawnTime;
             StartCoroutine(PushRoutine(player));
         }
     }

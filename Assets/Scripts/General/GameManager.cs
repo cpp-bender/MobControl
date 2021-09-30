@@ -7,14 +7,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     public GameObject Destination { get; private set; }
     public GameObject Canon { get; private set; }
-    public Action LeftButtonClick;
-    public Action GameStart;
+    public bool IsGameOver { get => isGameOver; set => isGameOver = value; }
+
+    private Action LeftButtonClick;
+    private Action GameStart;
 
     [SerializeField] EnemySpawnData enemySpawnData;
 
     [Header("Debug Values")]
     [SerializeField] bool isGameStarted;
     [SerializeField] bool canInstantiateEnemyWave;
+    [SerializeField] bool isGameOver;
 
     protected override void Awake()
     {
@@ -31,7 +34,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void Update()
     {
-        HandleInput();
+        if (!IsGameOver)
+        {
+            HandleInput();
+        }
     }
 
     private void HandleInput()
@@ -60,14 +66,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     private IEnumerator SpawnEnemyWaveRoutine(float waitTime)
     {
         canInstantiateEnemyWave = false;
-        float randPosX, ranPosY;
+        float randPosX, ranPosZ;
         for (int i = 0; i < enemySpawnData.EnemyWaveCount; i++)
         {
             randPosX = Random.Range(-enemySpawnData.EnemySpawnPosXThreshold, enemySpawnData.EnemySpawnPosXThreshold);
-            ranPosY = Random.Range(enemySpawnData.EnemySpawnPosYThreshold, enemySpawnData.EnemySpawnPosYThreshold + .5f);
-            var enemyStartPos = new Vector3(Destination.transform.position.x + randPosX, 0f, Destination.transform.position.z - ranPosY);
+            ranPosZ = Random.Range(enemySpawnData.EnemySpawnPosZThreshold, enemySpawnData.EnemySpawnPosZThreshold + .5f);
+            var enemyStartPos = new Vector3(Destination.transform.position.x + randPosX, 0f, Destination.transform.position.z - ranPosZ);
             var enemyQuaternion = Quaternion.Euler(0f, 180f, 0f);
-            GameObject enemy = PoolManager.Instance.Get(PoolGameObjectType.Enemy);
+            GameObject enemy = Random.Range(0, 100 / enemySpawnData.HugeEnemySpawnPercentRate) == 0
+                ? PoolManager.Instance.Get(PoolGameObjectType.HugeEnemy)
+                : PoolManager.Instance.Get(PoolGameObjectType.Enemy);
             enemy.transform.position = enemyStartPos;
             enemy.transform.rotation = enemyQuaternion;
             yield return new WaitForSeconds(.1f);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class DestinationController : MonoBehaviour
 {
@@ -7,7 +8,22 @@ public class DestinationController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             var player = other.gameObject;
-            PoolManager.Instance.ReturnToPool(player, PoolGameObjectType.Player);
+            player.GetComponent<PlayerController>().CanMove = false;
+            StartCoroutine(WaitRoutine(.5f, player, PoolGameObjectType.Player));
         }
+        else if (other.gameObject.CompareTag("Huge Player"))
+        {
+            var hugePlayer = other.gameObject;
+            hugePlayer.GetComponent<PlayerController>().CanMove = false;
+            StartCoroutine(WaitRoutine(.5f, hugePlayer, PoolGameObjectType.HugePlayer));
+        }
+    }
+
+    private IEnumerator WaitRoutine(float waitTime, GameObject gameObject, PoolGameObjectType poolGameObject)
+    {
+        yield return new WaitForSecondsRealtime(waitTime);
+        gameObject.GetComponent<PlayerController>().CanMove = true;
+        gameObject.transform.localScale = Vector3.one;
+        PoolManager.Instance.ReturnToPool(gameObject,poolGameObject);
     }
 }

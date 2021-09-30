@@ -5,22 +5,66 @@ public class EnemyController : MonoBehaviour, IEntity
 {
     [SerializeField] EnemyData enemyData;
 
+    public bool CanMove { get; set; }
+
+    private GameObject canon;
+    private Rigidbody body;
+
+    private void Awake()
+    {
+        canon = GameManager.Instance.Canon;
+        body = GetComponent<Rigidbody>();
+        CanMove = true;
+    }
+
     private void Update()
     {
-        Move();
+        if (!GameManager.Instance.IsGameOver)
+        {
+            CheckIfEnemyCanMove();
+            Move();
+        }
+    }
+
+    private void CheckIfEnemyCanMove()
+    {
+        if (transform.position.z < canon.transform.position.z + 2f)
+        {
+            CanMove = false;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PoolManager.Instance.ReturnToPool(gameObject, PoolGameObjectType.Enemy);
+            GameObject player = collision.gameObject;
+            PoolManager.Instance.ReturnToPool(player, PoolGameObjectType.Player);
+        }
+        else if (collision.gameObject.CompareTag("Huge Player"))
+        {
+            GameObject hugePlayer = collision.gameObject;
+            if (hugePlayer.transform.localScale == Vector3.one / 2f)
+            {
+                SetScale(hugePlayer, Vector3.one);
+                PoolManager.Instance.ReturnToPool(hugePlayer, PoolGameObjectType.HugePlayer);
+            }
+            else
+            {
+                hugePlayer.transform.localScale -= (Vector3.one / 10f);
+            }
+        }
+        else if(collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Huge Enemy"))
+        {
+            var enemy = collision.gameObject;
+            body.velocity = Vector3.zero;
+            enemy.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
 
     public void Move()
     {
-        if (transform.position.z > 1f)
+        if (CanMove)
         {
             transform.Translate(transform.forward * enemyData.MoveSpeed * Time.deltaTime, Space.World);
         }
@@ -33,6 +77,19 @@ public class EnemyController : MonoBehaviour, IEntity
     private IEnumerator RemoveRoutine(float waitDelay)
     {
         yield return new WaitForSeconds(waitDelay);
-        PoolManager.Instance.ReturnToPool(gameObject, PoolGameObjectType.Enemy);
+        CanMove = true;
+        if (gameObject.CompareTag("Enemy"))
+        {
+            PoolManager.Instance.ReturnToPool(gameObject, PoolGameObjectType.Enemy);
+        }
+        else if (gameObject.CompareTag("Huge Enemy"))
+        {
+            PoolManager.Instance.ReturnToPool(gameObject, PoolGameObjectType.HugeEnemy);
+        }
+    }
+
+    public void SetScale(GameObject gameObject, Vector3 scale)
+    {
+        gameObject.transform.localScale = scale;
     }
 }

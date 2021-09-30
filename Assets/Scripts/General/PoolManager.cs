@@ -23,6 +23,7 @@ public class PoolManager : SingletonMonoBehaviour<PoolManager>
         for (int i = 0; i < poolData.Prefabs.Length; i++)
         {
             poolObjects[i] = new Queue<GameObject>();
+            Instantiate(new GameObject(poolData.Prefabs[i].name), transform);
         }
     }
 
@@ -40,7 +41,7 @@ public class PoolManager : SingletonMonoBehaviour<PoolManager>
 
     private void AddToPool(GameObject gameObject, int gameObjectIndex)
     {
-        var pooledObject = Instantiate(gameObject, transform);
+        var pooledObject = Instantiate(gameObject, transform.GetChild(gameObjectIndex));
         poolObjects[gameObjectIndex].Enqueue(pooledObject);
     }
 
@@ -56,4 +57,6 @@ public enum PoolGameObjectType
 {
     Player = 0,
     Enemy = 1,
+    HugePlayer = 2,
+    HugeEnemy = 3,
 };

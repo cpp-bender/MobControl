@@ -12,13 +12,37 @@ public class WallController : MonoBehaviour
 
     [SerializeField] WallData wallData;
     [SerializeField] DoublingValue doublingValue;
-    [SerializeField] bool canMove;
+    [SerializeField] bool canMoveBetween;
 
     private void OnEnable()
     {
-        if (canMove)
+        if (canMoveBetween)
         {
             StartCoroutine(MoveBetweenRoutine());
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            for (int i = 0, j = (int)doublingValue / 2; i < (int)doublingValue; i++, j--)
+            {
+                var spawnPos = other.transform.position + Vector3.forward * 1.5f + Vector3.right * j;
+                GameObject player = PoolManager.Instance.Get(PoolGameObjectType.Player);
+                player.transform.position = spawnPos;
+                j--;
+            }
+        }
+        else if (other.CompareTag("Huge Player"))
+        {
+            for (int i = 0, j = (int)doublingValue / 2; i < (int)doublingValue; i++, j--)
+            {
+                var spawnPos = other.transform.position + Vector3.forward * 2f + Vector3.left * j;
+                GameObject hugePlayer = PoolManager.Instance.Get(PoolGameObjectType.HugePlayer);
+                hugePlayer.transform.position = spawnPos;
+                j--;
+            }
         }
     }
 
@@ -31,21 +55,6 @@ public class WallController : MonoBehaviour
             Vector3 targetPos = new Vector3(wallData.MoveBetween, transform.position.y, transform.position.z);
             transform.position = Vector3.Lerp(startPos, targetPos, interpolation);
             yield return null;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            for (int i = 0, j = (int)doublingValue / 2; i < (int)doublingValue; i++, j--)
-            {
-                var spawnPos = other.transform.position + Vector3.forward * 1.5f + Vector3.right * j;
-                GameObject go = PoolManager.Instance.Get(PoolGameObjectType.Player);
-                go.SetActive(true);
-                go.transform.position = spawnPos;
-                j--;
-            }
         }
     }
 }

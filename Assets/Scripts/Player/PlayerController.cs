@@ -4,8 +4,11 @@ public class PlayerController : MonoBehaviour, IEntity
 {
     [SerializeField] PlayerData playerData;
 
+    public bool CanMove { get => canMove; set => canMove = value; }
+    
     private GameObject destination;
     private Rigidbody body;
+    private bool canMove = true;
 
     private void Awake()
     {
@@ -15,14 +18,31 @@ public class PlayerController : MonoBehaviour, IEntity
 
     private void Update()
     {
-        Move();
+        if (!GameManager.Instance.IsGameOver)
+        {
+            Move();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            PoolManager.Instance.ReturnToPool(gameObject, PoolGameObjectType.Player);
+            GameObject enemy = collision.gameObject;
+            PoolManager.Instance.ReturnToPool(enemy, PoolGameObjectType.Enemy);
+        }
+        else if (collision.gameObject.CompareTag("Huge Enemy"))
+        {
+            GameObject hugeEnemy = collision.gameObject;
+            if (hugeEnemy.transform.localScale == Vector3.one / 2f)
+            {
+                SetScale(hugeEnemy, Vector3.one);
+                PoolManager.Instance.ReturnToPool(hugeEnemy, PoolGameObjectType.HugeEnemy);
+            }
+            else
+            {
+                hugeEnemy.transform.localScale -= (Vector3.one / 10f);
+            }
         }
     }
 
@@ -36,14 +56,22 @@ public class PlayerController : MonoBehaviour, IEntity
 
     public void Move()
     {
-        Vector3 dirToTarget = (destination.transform.position - transform.position).normalized;
-        transform.Translate(dirToTarget * Time.deltaTime * playerData.MoveSpeed, Space.World);
-        var destinationPos = new Vector3(destination.transform.position.x, 0f, destination.transform.position.z);
-        transform.LookAt(destinationPos);
+        if (canMove)
+        {
+            Vector3 dirToTarget = (destination.transform.position - transform.position).normalized;
+            transform.Translate(dirToTarget * Time.deltaTime * playerData.MoveSpeed, Space.World);
+            var destinationPos = new Vector3(destination.transform.position.x, 0f, destination.transform.position.z);
+            transform.LookAt(destinationPos);
+        }
     }
 
     private void ResetVelocityTo(Vector3 newVeclocity)
     {
         body.velocity = newVeclocity;
+    }
+
+    public void SetScale(GameObject gameObject, Vector3 scale)
+    {
+        gameObject.transform.localScale = scale;
     }
 }

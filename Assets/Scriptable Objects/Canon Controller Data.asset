@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 2356766321045018163, guid: 2a939b553e749c44592e0a1f6ee81f68,
     type: 3}
+  hugePlayerPrefab: {fileID: 9075919276160905772, guid: fa883862ebccad7418e5898e35e73fb4,
+    type: 3}
   moveSpeed: 5
   moveThreshold: 5
   pushRoutineFrameCount: 30
+  playerRespawnTime: 0.5
+  hugePlayerSpawnPercentRate: 50
   pushTo: 5
