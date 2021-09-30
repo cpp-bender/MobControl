@@ -87,6 +87,7 @@ public class EnemyController : MonoBehaviour, IEntity
     private IEnumerator RemoveRoutine(float waitDelay)
     {
         yield return new WaitForSeconds(waitDelay);
+        GameManager.Instance.IsGameOver = true;
         CanMove = true;
         if (gameObject.CompareTag("Enemy"))
         {

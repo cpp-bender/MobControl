@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -12,8 +14,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private Action LeftButtonClick;
     private Action GameStart;
+    private int score = 0;
 
     [SerializeField] EnemySpawnData enemySpawnData;
+    [SerializeField] TextMeshProUGUI tapToPlayText;
+    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] GameObject backgroundImage;
+    [SerializeField] GameObject gameoverText;
 
     [Header("Debug Values")]
     [SerializeField] bool isGameStarted;
@@ -37,6 +44,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         {
             HandleInput();
         }
+        else
+        {
+            StartCoroutine(FadeOutScreen());
+        }
     }
 
     private void HandleInput()
@@ -53,6 +64,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
         if (!isGameStarted && Input.GetMouseButtonDown(0))
         {
+            tapToPlayText.gameObject.SetActive(false);
             GameStart?.Invoke();
         }
     }
@@ -67,6 +79,26 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         Platform = GameObject.Find("Platform");
         Destination = GameObject.Find("Destination");
         Canon = GameObject.Find("Canon");
+    }
+
+    public void AddScore(int point)
+    {
+        score += point;
+        scoreText.text = "Score: " + score.ToString();
+    }
+
+    public IEnumerator FadeOutScreen()
+    {
+        Image image = backgroundImage.GetComponent<Image>();
+        Color tempColor = image.color;
+        while (tempColor.a <= 1)
+        {
+            tempColor.a += .01f;
+            image.color = tempColor;
+            yield return null;
+        }
+        gameoverText.SetActive(true);
+        isGameOver = true;
     }
 
     private IEnumerator SpawnEnemyWaveRoutine(float waitTime)

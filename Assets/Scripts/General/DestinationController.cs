@@ -9,12 +9,14 @@ public class DestinationController : MonoBehaviour
         {
             var player = other.gameObject;
             player.GetComponent<PlayerController>().CanMove = false;
+            GameManager.Instance.AddScore(1);
             StartCoroutine(WaitRoutine(.5f, player, PoolGameObjectType.Player));
         }
         else if (other.gameObject.CompareTag("Huge Player"))
         {
             var hugePlayer = other.gameObject;
             hugePlayer.GetComponent<PlayerController>().CanMove = false;
+            GameManager.Instance.AddScore(5);
             StartCoroutine(WaitRoutine(.5f, hugePlayer, PoolGameObjectType.HugePlayer));
         }
     }
